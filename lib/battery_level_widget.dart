@@ -1,42 +1,32 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 class BatteryWidget extends StatelessWidget {
   final int batteryLevel;
-  final Color batOkColor;
-  final Color batMidColor;
-  final Color batLowColor;
   final double height;
   final int bars;
   final double scaleFactor;
 
-  BatteryWidget(
-      {this.batteryLevel,
-      this.batOkColor = Colors.green,
-      this.batMidColor = Colors.orange,
-      this.batLowColor = Colors.red,
-      this.bars = 4,
-      this.scaleFactor = 1.0})
+  BatteryWidget({this.batteryLevel, this.bars = 4, this.scaleFactor = 1.0})
       : this.height = 50 * scaleFactor,
         assert(bars > 3 && bars <= 8),
         assert(scaleFactor > 0.2, "Scale factor must be more than 0"),
         assert(scaleFactor <= 2, "Scale factor must be less then 2");
 
   Color _getColorByBatteryLevel() {
-    Color result;
+    // TODO make more orange on a middle
+    double red = cos((batteryLevel * (pi / 2)) / 100) * 255;
+    double green = 200 - (cos((batteryLevel * (pi / 2)) / 100) * 200);
 
-    if (batteryLevel >= 50) {
-      result = batOkColor;
-    } else if (batteryLevel >= 20 && batteryLevel < 50) {
-      result = batMidColor;
-    } else {
-      result = batLowColor;
-    }
+    print("R:$red");
+    print("G:$green");
+
+    Color result = Color.fromRGBO(red.toInt(), green.toInt(), 0, 1);
 
     return result;
   }
 
   // TODO pad must be from bars amount
-  // TODO colors must by from bat level
   // TODO make pad field common
 
   Iterable<Widget> get _makeBatteryBar sync* {
